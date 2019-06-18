@@ -1,1 +1,42 @@
-＃
+＃python 中文件读取最后一行
+#用到文件操纵中的seek 
+ F.seek(偏移量，相对位置)方法  设置文件的读写位置
+    偏移量：
+        大小0的数代表向文件末尾方向移动
+        小于0代表文件头方向移动
+    相对位置：
+        0 代表从文件的头开始偏移
+        1 代表从当前位置开始偏移
+        2 代表从文件尾开始偏移
+ 注意：！文件打开的方式一定是二进制文件读取'rb'
+ 
+ 代码块-----------------------------------------
+ def get_student_id():
+    offs = -1
+    '''获取文件中最后一行的id信息 若无返回1000'''
+    with open('student_msg', 'rb') as s:
+        #如果文件为空
+        if not s.read(1):
+            print('空')
+            return 1000
+        #如果文件只有一行
+        if len(s.readlines()) == 1:
+            print('ss')
+            s.seek(0,0)
+            line = s.readline()
+        else:
+            while True:
+                s.seek(offs,2)
+                line = s.readlines()
+                print(line)
+                if len(line)>1:
+                    line = line[-1]
+                    break
+                else:
+                    offs *= 2
+        print(line)
+        s = line.decode('utf-8')
+        lastID = s.split(',')[0]
+    return int(lastID)
+    #---------------------------------------------------
+    
